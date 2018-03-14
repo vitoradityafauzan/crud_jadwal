@@ -1,0 +1,76 @@
+// Cek apakah file foto sebelumnya ada di folder foto
+		if(is_file("foto/".$data['foto'])) // Jika foto ada
+			unlink("foto/".$data['foto']); // Hapus file foto sebelumnya yang ada di folder foto
+		
+		// Proses ubah ke Database
+		$modal = mysqli_query("UPDATE biodata SET nama=:nama, jenis_kelamin=:jk, telp=:telp, alamat=:alamat, foto=:foto WHERE nis=:nis");
+		
+		// Load ulang view.php agar data diubah tadi bisa terubah di tabel pada view.php
+		ob_start();
+		include "view.php";
+		$html = ob_get_contents();
+		ob_end_clean();
+		
+		// Buat variabel reponse yang nantinya akan diambil pada proses ajax ketika sukses
+		$response = array(
+			'status'=>'sukses', // Set status
+			'pesan'=>'Data berhasil diubah', // Set pesan
+			'html'=>$html // Set html
+		);
+	}else{ // Jika proses upload gagal
+		$response = array(
+			'status'=>'gagal', // Set status
+			'pesan'=>'Gambar gagal untuk diupload', // Set pesan
+		);
+	}
+}else{ // Jika user tidak menceklis checkbox yang ada di form, lakukan :
+	// Proses ubah ke Database
+	$modal = mysqli_query("UPDATE siswa SET nama=:nama, jenis_kelamin=:jk, telp=:telp, alamat=:alamat WHERE nis=:nis");
+	
+	// Load ulang view.php agar data diubah tadi bisa terubah di tabel pada view.php
+	ob_start();
+	include "view.php";
+	$html = ob_get_contents();
+	ob_end_clean();
+	
+	// Buat variabel reponse yang nantinya akan diambil pada proses ajax ketika sukses
+	$response = array(
+		'status'=>'sukses', // Set status
+		'pesan'=>'Data berhasil diubah', // Set pesan
+		'html'=>$html // Set html
+	);
+}
+
+echo json_encode($response); // konversi variabel response menjadi JSON
+
+
+
+
+
+
+
+
+
+
+
+
+	$modal=mysqli_query($conn,"UPDATE biodata SET fname = '$fname', lname = '$lname', email = '$email', phone = '$phone', position = '$position', division = '$division', foto = $foto WHERE nik = '$nik'");
+	header('location:admin.php');
+
+	$response = array(
+		'status'=>'sukses', // Set status
+		'pesan'=>'Data berhasil disimpan', // Set pesan
+		'html'=>$html // Set html
+	);
+}else{ // Jika proses upload gagal
+	$response = array(
+		'status'=>'gagal', // Set status
+		'pesan'=>'Gambar gagal untuk diupload', // Set pesan
+	);
+}
+
+echo json_encode($response); // konversi variabel response menjadi JSON
+
+
+
+$sql = "INSERT INTO biodata (nik, fname, lname, email, phone, position, division, foto) VALUES('$nik','$fname', '$lname', '$email','$phno','$postion','$division', '$fotobaru')";
